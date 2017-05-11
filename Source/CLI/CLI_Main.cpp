@@ -83,7 +83,8 @@ void General_Start_0(struct MediaInfo_Event_General_Start_0* Event, struct UserH
     if (MDFile.is_open())
     {
         //TODO: works only with video in stream 0 with ID 1
-        string line; 
+        CurrentMD5.clear();
+        string line;
         while (getline(MDFile, line))
         {
             if (!line.empty() && line[0] == '0')
