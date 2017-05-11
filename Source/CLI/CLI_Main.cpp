@@ -20,6 +20,7 @@
     #include "io.h"
     #include "fcntl.h"
 #endif
+#include <fstream>
 using namespace std;
 using namespace MediaInfoNameSpace;
 #include "MediaInfo/MediaInfo_Events.h"
@@ -64,6 +65,66 @@ void Log_0 (struct MediaInfo_Event_Log_0* Event, struct UserHandle_struct* UserH
         STRINGOUT(MessageString);
 }
 
+vector<string> CurrentMD5;
+size_t CurrentMD5_Pos;
+
+//---------------------------------------------------------------------------
+void General_Start_0(struct MediaInfo_Event_General_Start_0* Event, struct UserHandle_struct*)
+{
+    string CurrentFileName = Event->FileName;
+    CurrentFileName += ".md5";
+    string::size_type Dir_Pos = CurrentFileName.rfind("\\ffv1\\");
+    if (Dir_Pos != string::npos)
+    {
+        CurrentFileName.erase(Dir_Pos, 6);
+        CurrentFileName.insert(Dir_Pos, "\\md5\\");
+    }
+    ifstream MDFile(CurrentFileName);
+    if (MDFile.is_open())
+    {
+        //TODO: works only with video in stream 0 with ID 1
+        string line; 
+        while (getline(MDFile, line))
+        {
+            if (!line.empty() && line[0] == '0')
+            {
+                std::string::size_type pos = line.rfind(' ');
+                if (pos + 32 + 1 == line.size())
+                    CurrentMD5.push_back(line.substr(pos+1));
+            }
+        }
+        MDFile.close();
+    }
+
+    CurrentMD5_Pos=0;
+}
+
+//---------------------------------------------------------------------------
+void Global_FrameHash_0(struct MediaInfo_Event_Global_FrameHash_0* Event, struct UserHandle_struct*)
+{
+    if (CurrentMD5_Pos>=CurrentMD5.size())
+    {
+        cout<<"Frame count issue!"<<endl;
+        return;
+    }
+
+    for (size_t i=0; i<Event->Hashes_Size; i++)
+        if (Event->Hashes[i]->Kind==FrameHashKind_MD5)
+            if (Event->Hashes[i]->Value!=CurrentMD5[CurrentMD5_Pos])
+                cout<<"Hum!"<<endl;
+
+    CurrentMD5_Pos++;
+}
+
+//---------------------------------------------------------------------------
+void Global_FrameContent_0(struct MediaInfo_Event_Global_FrameContent_0* Event, struct UserHandle_struct*)
+{
+    cout<<Event->Planes_Size;
+    for (size_t i=0; i<Event->Planes_Size; i++)
+        cout<<' '<<Event->Planes[i]->AllBytesPerLine();
+    cout<<endl;
+}
+
 //****************************************************************************
 // The callback function
 //****************************************************************************
@@ -88,6 +149,9 @@ void __stdcall Event_CallBackFunction(unsigned char* Data_Content, size_t Data_S
     switch (EventID)
     {
         case MediaInfo_Event_Log                                                    : if (EventVersion==0 && Data_Size>=sizeof(struct MediaInfo_Event_Log_0)) Log_0((struct MediaInfo_Event_Log_0*)Data_Content, UserHandler); break;
+        case MediaInfo_Event_General_Start                                          : if (EventVersion==0 && Data_Size>=sizeof(struct MediaInfo_Event_General_Start_0)) General_Start_0((struct MediaInfo_Event_General_Start_0*)Data_Content, UserHandler); break;
+        case MediaInfo_Event_Global_FrameHash                                       : if (EventVersion==0 && Data_Size>=sizeof(struct MediaInfo_Event_Global_FrameHash_0)) Global_FrameHash_0((struct MediaInfo_Event_Global_FrameHash_0*)Data_Content, UserHandler); break;
+        case MediaInfo_Event_Global_FrameContent                                    : if (EventVersion==0 && Data_Size>=sizeof(struct MediaInfo_Event_Global_FrameContent_0)) Global_FrameContent_0((struct MediaInfo_Event_Global_FrameContent_0*)Data_Content, UserHandler); break;
         default                                                                     : ;
     }
 }
@@ -98,14 +162,19 @@ void __stdcall Event_CallBackFunction(unsigned char* Data_Content, size_t Data_S
 
 int main(int argc, char* argv_ansi[])
 {
+    char* Format = "F1L1XXL0";
+
+
+
+
     //Localisation
     setlocale(LC_ALL, "");
     MediaInfo::Option_Static(__T("CharSet"), __T(""));
 
     //Initialize terminal (to fix Unicode output on Win32)
     #if defined(_MSC_VER) && defined(UNICODE)
-        _setmode(_fileno(stdout), _O_U8TEXT);
-        _setmode(_fileno(stderr), _O_U8TEXT);
+        //_setmode(_fileno(stdout), _O_U8TEXT);
+        //_setmode(_fileno(stderr), _O_U8TEXT);
         CLI_Option_Bom=false;
     #endif
     MediaInfo::Option_Static(__T("LineSeparator"), __T("\n")); //Using sdtout
