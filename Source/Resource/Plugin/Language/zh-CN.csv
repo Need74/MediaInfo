@@ -155,7 +155,7 @@ Actor;演员
 Actor_Character;角色
 Added_Date;附加数据
 Address;地址
-AdID;
+AdID;广告ID标识符
 Advanced;高级
 Advanced mode;高级模式
 Album;专辑
@@ -189,8 +189,8 @@ Author;作者
 BarCode;条形码
 Basic;基本
 Basic_Note;注意: 要了解更多关于此文件的信息, 请选择不同的视图 (表格, 树状图 ...)
-BedChannelConfiguration;
-BedChannelCount;
+BedChannelConfiguration;基础声道配置
+BedChannelCount;基础声道数
 BitDepth;位深
 BitDepth_Detected;检测到的位深
 BitDepth_Stored;存储的位深
@@ -206,7 +206,7 @@ Bits-(Pixel*Frame);数据密度【码率/(像素×帧率)】
 BufferSize;缓冲大小
 Cancel;取消
 Channel(s);声道
-ChannelLayout;
+ChannelLayout;声道布局
 ChannelPositions;声道位置
 Chapter(s);章节
 Chapters;章节
@@ -249,7 +249,7 @@ Codec_Settings_PacketBitStream;编码设置, 数据包比特流
 Codec_Settings_QPel;编码设置, QPel
 Codec_Settings_Sign;编码设置, Sign
 Codec_Url;编解码器的网址
-CodecConfigurationBox;
+CodecConfigurationBox;编解码器配置框
 CodecID;编解码器ID
 CodecID_Description;编解码器描述
 CoDirector;合作导演
@@ -263,7 +263,7 @@ CommissionedBy;评论人
 Compilation;编辑
 CompleteName;完整名称
 CompletionDate;完整日期
-ComplexityIndex;
+ComplexityIndex;复杂指数
 Composer;作曲
 Compression_Mode;压缩模式
 Compression_Mode_Lossless;无损
@@ -347,7 +347,7 @@ File_Modified_Date;最后修改日期
 File_Modified_Date_Local;最后修改日期(本地)
 FileExtension;扩展名
 FileName;文件名
-FileNameExtension;
+FileNameExtension;文件扩展名
 FileSize;文件大小
 Folder;文件夹
 Folder (R);文件夹 (R)
@@ -605,7 +605,7 @@ Gop_OpenClosed_FirstFrame;GOP, 开启/闭合第一帧
 Gop_OpenClosed_Open;开启
 Grouping;集团
 h; 小时
-HDR_Format;
+HDR_Format;HDR格式
 Header file;创建头文件
 Height;高度
 Height_CleanAperture;清除采样高度
@@ -886,8 +886,8 @@ NewVersion_Question_Content;新版本 (v%Version%) 可用, 是否下载？
 NewVersion_Question_Title;新版本已发布!
 No;否
 Not yet;尚无
-NumberOfDynamicObjects;
-NumColors;色深
+NumberOfDynamicObjects;动态对象数量
+NumColors;颜色数量
 OK;确定
 One output file per input file;一个输入文件对应一个输出文件
 Open;打开
@@ -1109,9 +1109,9 @@ Tree;树状图
 Tree & Text;树状图和文本
 Type;类型
 UniqueID;唯一ID
-UniversalAdID;
-UniversalAdID_Registry;
-UniversalAdID_Value;
+UniversalAdID;通用广告ID
+UniversalAdID_Registry;通用广告ID注册表
+UniversalAdID_Value;通用广告ID值
 Unknown;未知
 Url;网址
 Video;视频
@@ -1147,5 +1147,5 @@ Written_Location;写入位置
 WrittenBy;书写人: 
 Yes;是
 Your system;您的系统
-ZZ_Automatic_Percent;97
-ZZ_AutomaticLanguage_Percent;97
+ZZ_Automatic_Percent;98
+ZZ_AutomaticLanguage_Percent;98
